@@ -1,8 +1,10 @@
 const fetch = require('node-fetch');
+const targetDate = '2020-12-01';
+const areaName = 'Brighton and Hove';
 
 module.exports = async function() {
     const source = await fetchCovidData();
-    const targetCases = 60;
+    const targetCases = getTargetRate(source.data);
     const firstRow = source.data[0];
     const dailyRateOfChange = firstRow.newCasesBySpecimenDateChangePercentage / 7;
     let currentRate = firstRow.newCasesBySpecimenDateRollingRate;
@@ -13,12 +15,13 @@ module.exports = async function() {
         currentDate.setDate(currentDate.getDate() + 1)
         const tomorrowsRateOfChange = (currentRate / 100) * dailyRateOfChange;
         currentRate = currentRate + tomorrowsRateOfChange; 
-        console.log('Rateofchange:' + tomorrowsRateOfChange);
-        console.log('Date:' + currentDate.getDate());
-        console.log('currentRate:' + currentRate);
+        // console.log('Rateofchange:' + tomorrowsRateOfChange);
+        // console.log('Date:' + currentDate.getDate());
+        // console.log('currentRate:' + currentRate);
     }
 
     return {
+        targetDate: new Date(targetDate).toDateString(),
         date: currentDate.toDateString(),
         latestRollingRate: firstRow.newCasesBySpecimenDateChangePercentage,
         areaName: firstRow.areaName
@@ -27,18 +30,28 @@ module.exports = async function() {
 
   async function fetchCovidData() {
     const endpoint = 'https://coronavirus.data.gov.uk/api/v1/data?' + 
-    'filters=areaType=utla;areaName=Brighton%2520and%2520Hove;date%253E2020-12-01&' + 
+    'filters=areaType=utla;areaName=' + areaName  + ';date>=' + targetDate + '&' + 
     'structure=' +
-    '%7B%22areaType%22:%22areaType%22,' +
-    '%22areaName%22:%22areaName%22,' +
-    '%22areaCode%22:%22areaCode%22,' +
-    '%22date%22:%22date%22,' +
-    '%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,' +
-    '%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,' +
-    '%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,' +
-    '%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json';
-    const response = await fetch(endpoint);
+    '{"areaType":"areaType",' +
+    '"areaName":"areaName",' +
+    '"areaCode":"areaCode",' +
+    '"date":"date",' +
+    '"newCasesBySpecimenDateRollingSum":"newCasesBySpecimenDateRollingSum",' +
+    '"newCasesBySpecimenDateRollingRate":"newCasesBySpecimenDateRollingRate",' +
+    '"newCasesBySpecimenDateChange":"newCasesBySpecimenDateChange",' +
+    '"newCasesBySpecimenDateChangePercentage":"newCasesBySpecimenDateChangePercentage"}&format=json';
+    const response = await fetch(encodeURI(endpoint));
     const data = await response.json();
-    console.log(data);
     return data;
+  }
+
+  function getTargetRate(data) {
+    let targetRate;
+    data.forEach(function(row) {
+        console.log(row);
+        if(row.date == targetDate) {
+            targetRate = row.newCasesBySpecimenDateRollingRate;
+        }
+    });
+    return targetRate;
   }
