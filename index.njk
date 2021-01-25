@@ -1,0 +1,14 @@
+{% set first = brightonHove.data | first %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The daily case trends over the past seven days for {{ first.areaName }}</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<p>Over the past 7 days in <strong>{{ first.areaName }}</strong> new COVID-19 cases have changed by <strong>{{ forecast.latestRollingRate }}%.</strong></p>
+<p>At this rate, we'll be back to the same levels of 1st December on <strong>{{forecast.date}}.</strong></p>
+</body>
+</html>
