@@ -20,7 +20,8 @@ module.exports = async function() {
 
     return {
         date: currentDate.toDateString(),
-        latestRollingRate: firstRow.newCasesBySpecimenDateChangePercentage
+        latestRollingRate: firstRow.newCasesBySpecimenDateChangePercentage,
+        areaName: firstRow.areaName
     };
   };
 
