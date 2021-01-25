@@ -21,8 +21,8 @@ module.exports = async function() {
     }
 
     return {
-        targetDate: new Date(targetDate).toDateString(),
-        date: currentDate.toDateString(),
+        targetDate: getPrettyDate(new Date(targetDate)),
+        date: getPrettyDate(currentDate),
         latestRollingRate: firstRow.newCasesBySpecimenDateChangePercentage,
         areaName: firstRow.areaName
     };
@@ -54,4 +54,9 @@ module.exports = async function() {
         }
     });
     return targetRate;
+  }
+
+  function getPrettyDate(date) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Intl.DateTimeFormat('en-GB', options).format(date);
   }
