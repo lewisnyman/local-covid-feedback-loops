@@ -19,8 +19,10 @@ module.exports = async function() {
         // console.log('Date:' + currentDate.getDate());
         // console.log('currentRate:' + currentRate);
     }
-
+    const now = new Date;
     return {
+      updateDateTime: now.toUTCString(),
+        latestDate: getPrettyDate(new Date(firstRow.date)),
         targetDate: getPrettyDate(new Date(targetDate)),
         date: getPrettyDate(currentDate),
         latestRollingRate: firstRow.newCasesBySpecimenDateChangePercentage,

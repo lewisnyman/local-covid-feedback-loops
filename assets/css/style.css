@@ -1,8 +1,19 @@
-html {
+.container {
     background: #005EB8;
     color: white;
-    border: 20px solid white;
     padding: 10px;
     font-family: Frutiger, Arial, Helvetica, sans-serif;
     font-size: 40px;
+    width: 18em;
+    max-width: 100%;
+}
+.container a {
+    color: white;
+}
+footer p {
+    margin: 0;
+}
+small {
+    font-size: 14px;
+    line-height: 1.1em;
 }

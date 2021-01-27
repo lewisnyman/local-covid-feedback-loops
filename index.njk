@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
+<div class="container">
 <p>Over the past 7 days in <strong>{{ forecast.areaName }}</strong> new COVID-19 cases have changed by <strong>{{ forecast.latestRollingRate }}%.</strong></p>
 <p>At this rate, we'll be back to the same levels of {{ forecast.targetDate }} on <strong>{{forecast.date}}.</strong></p>
+<footer>
+<p><small>Cases recorded over 7 days before and including {{ forecast.latestDate}}. Data from <a href="https://coronavirus.data.gov.uk">https://coronavirus.data.gov.uk</a></small></p><p><small>Latest updated on: {{ forecast.updateDateTime}}</small></p></footer>
+</div>
 </body>
 </html>
